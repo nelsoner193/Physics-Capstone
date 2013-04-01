@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1364787960 source:/home/eric/Workspace/CollisionTest/main.cpp
+	<SFML/Graphics.hpp>
+	<entity.h>
+	<scene.h>
+	<shape.h>
+	<circle.h>
+
