@@ -1,5 +1,6 @@
 #include "scene.h"
 #include <cstddef>
+#include <iostream>
 
 Scene::Scene()
 {
@@ -81,7 +82,6 @@ void Scene::update(float dt)
         Entity* ent = (*i).second;
         ent->update(dt);
     }
-
     for (std::map<unsigned int, Entity*>::iterator i = _entmap.begin(); i != _entmap.end(); i++)
     {
         Entity* ent = (*i).second;
@@ -93,14 +93,13 @@ void Scene::update(float dt)
             ent->checkCollision(other, 0, dt);
         }
     }
-
     for (std::map<unsigned int, Entity*>::iterator i = _entmap.begin(); i != _entmap.end(); i++)
     {
         Entity* ent = (*i).second;
         ent->move();
     }
     handleAdding();
-    handleRemoving();
+    handleRemoving();;
 }
 
 Scene* Scene::_singleton = NULL;

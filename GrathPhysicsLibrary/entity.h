@@ -25,18 +25,17 @@ class Entity
         void Setddx(float val) { ddx = val; }
         float Getddy() { return ddy; }
         void Setddy(float val) { ddy = val; }
-        void update(float dt);
-        void move();
+        virtual void update(float dt);
+        virtual void move();
         void setForce(float x, float y) { ddx = x; ddy = y; }
         void applyForce(float x, float y) { ddx += x; ddy += y; }
         void setGravity(float x, float y) { gravity_x = x; gravity_y = y; }
         void checkCollision(Entity* other, float start, float end);
-        void collide(Entity* other);
+        virtual void collide(Entity* other);
         unsigned int id;
         Shape* shape;
         static Collection<unsigned int> _idpool;
     protected:
-    private:
         float x;
         float y;
         float angle;
@@ -46,5 +45,6 @@ class Entity
         float ddy;
         float gravity_x;
         float gravity_y;
+    private:
 };
 #endif // ENTITY_H

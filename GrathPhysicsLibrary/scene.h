@@ -15,15 +15,14 @@ class Scene
         void update(float dt);
         void addEntity(Entity* ent);
         void delEntity(Entity* ent);
+        std::map<unsigned int, Entity*> _entmap;
     protected:
     private:
         Scene();
         static Scene* _singleton;
-        std::map<unsigned int, Entity*> _entmap;
         std::vector<Entity*> _tobeadded;
         std::vector<Entity*> _toberemoved;
         void handleAdding();
         void handleRemoving();
 };
-
 #endif // SCENE_H
