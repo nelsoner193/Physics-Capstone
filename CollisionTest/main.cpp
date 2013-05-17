@@ -73,7 +73,7 @@ int main()
     GreenCircle.Move(WindowSize.x/2, WindowSize.y/2);
     TestEntity GreenCirclePhysics(GreenCircle.GetPosition().x, GreenCircle.GetPosition().y, (Shape*)new Circle(10.0), GreenCircle);
     //GreenCirclePhysics.setGravity(0, 4.9);
-    GreenCirclePhysics.Setdx(0.49);
+    GreenCirclePhysics.Setdx(95);
     //GreenCirclePhysics.Setdy(4.9);
 
     Scene::singleton().addEntity((Entity*)&GreenCirclePhysics);
@@ -82,7 +82,7 @@ int main()
     RedCircle.Move(WindowSize.x*(3/4), WindowSize.y/2);
     TestEntity RedCirclePhysics(RedCircle.GetPosition().x, RedCircle.GetPosition().y, (Shape*)new Circle(10.0), RedCircle);
     //RedCirclePhysics.setGravity(0, 4.9);
-    RedCirclePhysics.Setdx(-0.49);
+    RedCirclePhysics.Setdx(-95);
     //RedCirclePhysics.Setdy(4.9);
 
     Scene::singleton().addEntity((Entity*)&RedCirclePhysics);
@@ -108,7 +108,7 @@ int main()
                 }
                 if (Event.Key.Code == sf::Key::Space)
                 {
-                    GreenCirclePhysics.Setdx(4.9);
+                    GreenCirclePhysics.Setdx(180);
                     //GreenCirclePhysics.Setdy(4.9);
                 }
             }
