@@ -63,10 +63,10 @@ void Entity::update(float dt)
     dy += ddy*dt + gravity_y*dt;
 }
 
-void Entity::move()
+void Entity::move(float dt)
 {
-    x += dx;
-    y += dy;
+    x += dx*dt;
+    y += dy*dt;
 }
 
 void Entity::collide(Entity* other)
@@ -82,9 +82,6 @@ float sqr(float x)
 void Entity::checkCollision(Entity* other, float start, float end)
 {
     float interval = end-start;
-    float distance = sqrt(sqr((this->x+start*this->dx) - (other->x+start*other->dx))+sqr((this->y+start*this->dy) - (other->y)));
-    float thisDistanceTraveled = sqrt(sqr(interval*this->dx)+sqr(interval*this->dy));
-    float otherDistanceTraveled = sqrt(sqr(interval*other->dx)+sqr(interval*other->dy));
     float thisStartX = this->x + start*this->dx;
     float thisStartY = this->y + start*this->dy;
     float thisEndX = this->x + end*this->dx;
@@ -94,41 +91,29 @@ void Entity::checkCollision(Entity* other, float start, float end)
     float otherEndX = other->x + end*other->dx;
     float otherEndY = other->y + end*other->dy;
     if ((thisStartX + this->shape->minSize >= otherStartX - other->shape->minSize && thisEndX - this->shape->minSize <= otherEndX + other->shape->minSize) ||
-            (thisStartX - this->shape->minSize <= otherStartX + other->shape->minSize && thisEndX + this->shape->minSize >= otherEndX - other->shape->minSize)) // If they could've crossed paths in X dimension
+            (thisStartX - this->shape->minSize <= otherStartX + other->shape->minSize && thisEndX + this->shape->minSize >= otherEndX - other->shape->minSize)) // If they crossed in X
     {
         if ((thisStartY + this->shape->minSize >= otherStartY - other->shape->minSize && thisEndY - this->shape->minSize <= otherEndY + other->shape->minSize) ||
-                (thisStartY - this->shape->minSize <= otherStartY + other->shape->minSize && thisEndY + this->shape->minSize >= otherEndY - other->shape->minSize)) // If they could've crossed paths in Y dimension
+                (thisStartY - this->shape->minSize <= otherStartY + other->shape->minSize && thisEndY + this->shape->minSize >= otherEndY - other->shape->minSize)) // and they crossed in Y
         {
-            if (thisDistanceTraveled > this->shape->minSize || otherDistanceTraveled > other->shape->minSize)
+            float thisDistanceTraveled = sqrt(sqr(interval*this->dx)+sqr(interval*this->dy));
+            float otherDistanceTraveled = sqrt(sqr(interval*other->dx)+sqr(interval*other->dy));
+            if (thisDistanceTraveled > this->shape->minSize || otherDistanceTraveled > other->shape->minSize) // See if they're moving quickly
             {
-                std::cout << "Too far apart." << std::endl;
-                this->checkCollision(other, start, start+(interval/2));
+                //std::cout << "Too far apart." << std::endl;
+                this->checkCollision(other, start, start+(interval/2)); // If so, split the interval in half and try again.
                 this->checkCollision(other, end-(interval/2), end);
             }
-            else
+            else // Otherwise, they hit.
             {
-                std::cout << "Collided" << std::endl;
+                //std::cout << "Collided" << std::endl;
                 this->collide(other);
                 other->collide(this);
             }
         }
     }
-
-    /*if (distance < (this->shape->minSize + other->shape->minSize))
-    {
-        if (thisDistanceTraveled > this->shape->minSize || otherDistanceTraveled > other->shape->minSize)
-        {
-            std::cout << "Too far apart." << std::endl;
-            this->checkCollision(other, start, start+(interval/2));
-            this->checkCollision(other, end-(interval/2), end);
-        }
-        else
-        {
-            std::cout << "Collided" << std::endl;
-            this->collide(other);
-            other->collide(this);
-        }
-    }*/
 }
 
+// Provides a pool of unsigned ints to use as IDs for entities.
+// Allows for re-use of unused IDs.
 Collection<unsigned int> Entity::_idpool = Collection<unsigned int>();

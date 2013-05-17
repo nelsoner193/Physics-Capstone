@@ -11,6 +11,7 @@ class Entity
         Entity(float a, float b);
         Entity(float a, float b, Shape* shape);
         virtual ~Entity();
+        // Standard getters and setters.
         float GetX() { return x; }
         void SetX(float val) { x = val; }
         float GetY() { return y; }
@@ -25,8 +26,10 @@ class Entity
         void Setddx(float val) { ddx = val; }
         float Getddy() { return ddy; }
         void Setddy(float val) { ddy = val; }
+
+        // The fun stuff.
         virtual void update(float dt);
-        virtual void move();
+        virtual void move(float dt);
         void setForce(float x, float y) { ddx = x; ddy = y; }
         void applyForce(float x, float y) { ddx += x; ddy += y; }
         void setGravity(float x, float y) { gravity_x = x; gravity_y = y; }

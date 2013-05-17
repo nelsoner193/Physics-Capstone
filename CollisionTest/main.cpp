@@ -17,7 +17,7 @@ public:
     TestEntity(float a, float b) : Entity(a, b) { graphics = sf::Shape::Circle(0, 0, 10, sf::Color(0, 255, 0)); }
     TestEntity(float a, float b, Shape* shape) : Entity(a, b, shape) { graphics = sf::Shape::Circle(0, 0, 10, sf::Color(0, 255, 0)); }
     TestEntity(float a, float b, Shape* shape, sf::Shape graphic) : Entity(a, b, shape) { graphics = graphic; }
-    void move();
+    void move(float dt);
     void collide(Entity* other);
     void update(float dt);
 };
@@ -33,10 +33,10 @@ void TestEntity::collide(Entity* other)
     std::cout << "Entity " << this->id << " collided with entity " << other->id << std::endl;
 }
 
-void TestEntity::move()
+void TestEntity::move(float dt)
 {
-    x += dx;
-    y += dy;
+    x += dx*dt;
+    y += dy*dt;
     if (x < -(this->shape->maxSize))
     {
         x = WINDOW_X + shape->maxSize;

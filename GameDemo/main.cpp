@@ -36,7 +36,7 @@ public:
     Enemy(float a, float b, Shape* shape, sf::Shape graphic) : GameEntity(a, b, shape, graphic) { team = 2; generation = 0; }
     Enemy(float a, float b, Shape* shape, sf::Shape graphic, int gen) : GameEntity(a, b, shape, graphic) { team = 2; this->generation = gen; }
     void collide(Entity* other);
-    void move();
+    void move(float dt);
     void update(float dt);
 };
 
@@ -47,7 +47,7 @@ void Enemy::collide(Entity* other)
     {
         if (((GameEntity*)other)->team != 2)
         {
-            std::cout << "Explod" << std::endl;
+            //std::cout << "Boom!" << std::endl;
             if (generation < 2)
             {
                 float speed = sqrt((this->dx*this->dx)+(this->dy*this->dy));
@@ -118,14 +118,14 @@ public:
         this->graphics = graphic;
     }
     void collide(Entity* other);
-    void move();
+    void move(float dt);
     void update(float dt);
 };
 
-void Missile::move()
+void Missile::move(float dt)
 {
-    x += dx;
-    y += dy;
+    x += dx*dt;
+    y += dy*dt;
     if ((x < -(this->shape->maxSize)) || (x > WINDOW_X + this->shape->maxSize) || (y < -(this->shape->maxSize)) || (y > WINDOW_Y + this->shape->maxSize))
     {
         Scene::singleton().delEntity((Entity*)this);
@@ -213,10 +213,10 @@ void Player::update(float dt)
     }
 }
 
-void Player::move()
+void Player::move(float dt)
 {
-    x += dx;
-    y += dy;
+    x += dx*dt;
+    y += dy*dt;
     if (x < -(this->shape->maxSize))
     {
         x = WINDOW_X + shape->maxSize;
